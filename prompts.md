@@ -12,10 +12,10 @@ POST http://localhost:3000/v1/auth/register
 Content-Type: application/json
 
 {
-    "firstname": "test_user",
-    "lastname": "test_user_lastname",
-    "email": "test@local.com",
-    "password": "password1.X"
+"firstname": "test_user",
+"lastname": "test_user_lastname",
+"email": "test@local.com",
+"password": "password1.X"
 }
 
 // Login
@@ -23,8 +23,8 @@ POST http://localhost:3000/v1/auth/login
 Content-Type: application/json
 
 {
-    "email": "test@local.com",
-    "password": "password1.X"
+"email": "test@local.com",
+"password": "password1.X"
 }
 
 // Verifying Email
@@ -35,7 +35,7 @@ POST http://localhost:3000/v1/auth/forgot-password
 Content-Type: application/json
 
 {
-    "email": "email@local.com"
+"email": "email@local.com"
 }
 
 // Reset Password
@@ -43,7 +43,7 @@ POST http://localhost:3000/auth/reset-password/c8467a47-a46e-4f16-937b-8e1817220
 Content-Type: application/json
 
 {
-    "password": "password1.X"
+"password": "password1.X"
 }
 
 // Users
@@ -60,20 +60,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsI
 
 // Post Content
 POST http://localhost:3000/v1/content
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBsb2NhbC5jb20iLCJpYXQiOjE3MzQ5NjU2MTAsImV4cCI6MTczNDk2OTIxMH0._DVny8MtbOiy99BNZ9Xn4wnAODx5UuOJQrtUeueamg0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBsb2NhbC5jb20iLCJpYXQiOjE3MzQ5NjU2MTAsImV4cCI6MTczNDk2OTIxMH0.\_DVny8MtbOiy99BNZ9Xn4wnAODx5UuOJQrtUeueamg0
 Content-Type: application/json
 
 {
-  "startAt": "2025-03-19T14:30:00.000Z",
-  "endAt": "2025-03-19T14:30:00.000Z",
-  "title": "Sample Content",
-  "isActive": true,
-  "domain": "localhost",
-  "userId": 1,
-  "displayTrigger": "immediate",
-  "publisherKeyId": 1,
-  "script": "console.log('Hello World')",
-  "style": "canvas{pointer-events:none;position:fixed;top:0;left:0;width:100vw;height:400px}"
+"startAt": "2025-03-19T14:30:00.000Z",
+"endAt": "2025-03-19T14:30:00.000Z",
+"title": "Sample Content",
+"isActive": true,
+"domain": "localhost",
+"userId": 1,
+"displayTrigger": "immediate",
+"publisherKeyId": 1,
+"script": "console.log('Hello World')",
+"style": "canvas{pointer-events:none;position:fixed;top:0;left:0;width:100vw;height:400px}"
 }
 
 // Delete Content
@@ -82,7 +82,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsI
 
 // Get Publisher-Key
 GET http://localhost:3000/v1/publisher-key
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBsb2NhbC5jb20iLCJpYXQiOjE3MzQ5NjU2MTAsImV4cCI6MTczNDk2OTIxMH0._DVny8MtbOiy99BNZ9Xn4wnAODx5UuOJQrtUeueamg0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEBsb2NhbC5jb20iLCJpYXQiOjE3MzQ5NjU2MTAsImV4cCI6MTczNDk2OTIxMH0.\_DVny8MtbOiy99BNZ9Xn4wnAODx5UuOJQrtUeueamg0
 
 // Post Publisher-Key
 POST http://localhost:3000/v1/publisher-key
@@ -90,10 +90,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsI
 Content-Type: application/json
 
 {
-  "key": "f0025967-045d-4538-be50-89ecb1ac6126",
-  "isActive": true,
-  "limit": 0,
-  "isPublic": true
+"key": "f0025967-045d-4538-be50-89ecb1ac6126",
+"isActive": true,
+"limit": 0,
+"isPublic": true
 }
 
 örnek cevaplar ise şu şekilde olacak:
@@ -104,13 +104,13 @@ Content-Type: application/json
 // Login
 // 201 Created
 {
-    "access_token": "token_string"
+"access_token": "token_string"
 }
 
 // Verifying Email
 // 200 OK
 {
-    "message": "Email verified"
+"message": "Email verified"
 }
 
 Yazacağın kodlar için birkaç kısıtlama getirmek istiyorum. Bu kısıtlamaları aşağıda sıralıyorum.
@@ -124,5 +124,6 @@ Yazacağın kodlar için birkaç kısıtlama getirmek istiyorum. Bu kısıtlamal
 4. tüm kodlar test edilebilir olmalı.
 
 5. NextJS in app router yapısı ile çalıştığımı belirtmek isterim. Ayrıca pojemde default olarak src klasörü kullanmıyorum kodları buna göre yazmalısın.
+   Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
 
 6. kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
