@@ -127,3 +127,7 @@ Yazacağın kodlar için birkaç kısıtlama getirmek istiyorum. Bu kısıtlamal
    Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
 
 7. Kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
+
+8. Form yapıları için formik kullanılmalı.
+
+Hazır mısın?
