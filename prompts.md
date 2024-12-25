@@ -2,8 +2,6 @@ Bu proje charmmate isminde bir SAAS web uygulaması olacak.
 
 Kullanıcılar sisteme üye olarak, benim sağladığım içerikleri seçerek, belirtecekleri belirli özellikler, başlangıç ve bitiş tarihleri arasında kendi web sayfalarında gösterimlerini sağlayacaklar.
 
-Projeyi oluştururken senden fazlaca yardım alacağım.
-
 Bu web uygulaması NextJS ile geliştirilecek ve direkt olarak veritabanı kullanmak yerine contentmate-webservice isimli web servisimizi kullanacak.
 Web serviste gereken tüm iş zekası yer almakta. Restfull bir yapıya sahip. Seni bilgilendirmek adına, aşağıda sana birkaç örnek endpoint veriyorum.
 
@@ -123,7 +121,9 @@ Yazacağın kodlar için birkaç kısıtlama getirmek istiyorum. Bu kısıtlamal
 
 4. tüm kodlar test edilebilir olmalı.
 
-5. NextJS in app router yapısı ile çalıştığımı belirtmek isterim. Ayrıca pojemde default olarak src klasörü kullanmıyorum kodları buna göre yazmalısın.
-   Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
+5. Solid prensiplerine ve single responsibility prensibine uygun olmalı.
 
-6. kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
+6. NextJS in app router yapısı ile çalıştığımı belirtmek isterim. Ayrıca pojemde default olarak src klasörü kullanmıyorum kodları buna göre yazmalısın.
+Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
+
+6. Kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
