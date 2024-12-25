@@ -124,6 +124,6 @@ Yazacağın kodlar için birkaç kısıtlama getirmek istiyorum. Bu kısıtlamal
 5. Solid prensiplerine ve single responsibility prensibine uygun olmalı.
 
 6. NextJS in app router yapısı ile çalıştığımı belirtmek isterim. Ayrıca pojemde default olarak src klasörü kullanmıyorum kodları buna göre yazmalısın.
-Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
+   Yani app klasörünün içerisinde sayfalar, route lar vs olacaklar. diğer klasörler app klasörünün dışında olmalı mesela types, emuns, services, utils, hooks, components, etc.
 
-6. Kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
+7. Kodlar modüler olmalı. mesela auth diye bir klasör oluşturup içerisine register, login, verify-email, forgot-password, reset-password dosyalarını oluşturduysan eğer, mutlaka types kulasöründe de bir auth dosyası olmalı ve içerisinde tüm auth işlemleri için gerekli olan type tanımlamaları olmalı.
