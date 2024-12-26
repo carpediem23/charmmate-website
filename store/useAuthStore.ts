@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { TLoginFormValues, TAuthState } from '@/types/auth.type';
-import axiosInstance from '@/lib/axios.lib';
+import { loginAction, logoutAction } from '@/actions/auth.action';
 
 export const useAuthStore = create<TAuthState>()((set) => ({
   token: null,
@@ -10,8 +10,7 @@ export const useAuthStore = create<TAuthState>()((set) => ({
   login: async (values: TLoginFormValues) => {
     set({ loading: true, error: null });
     try {
-      const response = await axiosInstance.post('/api/auth/login', values);
-      const result = response.data;
+      const result = await loginAction(values);
 
       if (result.success) {
         set({
@@ -24,15 +23,21 @@ export const useAuthStore = create<TAuthState>()((set) => ({
       }
     } catch (error: any) {
       set({
-        error:
-          error.response?.data?.message || 'An error occurred during login',
+        error: 'An error occurred during login',
       });
     }
     set({ loading: false });
   },
   logout: async () => {
-    await axiosInstance.post('/api/auth/logout');
-    set({ token: null, authenticated: false });
+    try {
+      const result = await logoutAction();
+
+      if (result.success) {
+        set({ token: null, authenticated: false });
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   },
   setError: (error) => set({ error }),
   setLoading: (loading) => set({ loading }),
