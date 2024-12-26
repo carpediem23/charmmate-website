@@ -1,18 +1,13 @@
 'use client';
 
-import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
-import EHttpCodes from '@/enums/http-codes.enum';
+import { loginAction } from '@/actions/auth/index.action';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+  email: Yup.string().email().required(),
+  password: Yup.string().min(8).required(),
 });
 
 const initialValues: TLoginFormValues = {
@@ -22,19 +17,7 @@ const initialValues: TLoginFormValues = {
 
 export default function LoginForm() {
   const handleSubmit = async (values: TLoginFormValues) => {
-    try {
-      console.log(values);
-      const response = await axios.post('/auth/login/api', values);
-
-      if (response.status < EHttpCodes.Ok) {
-        throw new Error('Login failed');
-      }
-
-      const { access_token } = response.data;
-      console.log('Login success:', access_token);
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
+    const result = await loginAction(values);
   };
 
   return (
