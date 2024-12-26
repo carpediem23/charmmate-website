@@ -18,6 +18,7 @@ const initialValues: TLoginFormValues = {
 export default function LoginForm() {
   const handleSubmit = async (values: TLoginFormValues) => {
     const result = await loginAction(values);
+    console.log(result.access_token, result.error);
   };
 
   return (
