@@ -16,13 +16,13 @@ const initialValues: TLoginFormValues = {
 };
 
 export default function LoginForm() {
-  const { handleLogin, loading, error } = useAuthStore();
+  const { login, loading, error } = useAuthStore();
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={handleLogin}
+      onSubmit={login}
     >
       {() => (
         <Form className="mt-8 space-y-6">

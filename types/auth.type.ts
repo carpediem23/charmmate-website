@@ -16,7 +16,7 @@ export type TAuthState = {
   authenticated: boolean;
   loading: boolean;
   error: string | null;
-  handleLogin: (values: TLoginFormValues) => Promise<void>;
+  login: (values: TLoginFormValues) => Promise<void>;
   logout: () => void;
   setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
