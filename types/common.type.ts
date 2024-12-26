@@ -1,4 +1,4 @@
-import EHttpCodes from '@/enums/http-codes.enum';
+import EHttpCodes from '@/enums/common.enum';
 import Error from 'next/error';
 
 export type TServiceResponse = {
