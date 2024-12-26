@@ -1,9 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useEffect } from 'react';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -16,7 +18,12 @@ const initialValues: TLoginFormValues = {
 };
 
 export default function LoginForm() {
-  const { login, loading, error } = useAuthStore();
+  const { login, loading, error, authenticated } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (authenticated) router.push('/');
+  }, [authenticated]);
 
   return (
     <Formik

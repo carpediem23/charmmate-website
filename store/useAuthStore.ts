@@ -1,17 +1,17 @@
 import { create } from 'zustand';
+import Cookies from 'js-cookie';
 import { TLoginFormValues, TAuthState } from '@/types/auth.type';
 import { loginAction, logoutAction } from '@/actions/auth.action';
 
 export const useAuthStore = create<TAuthState>()((set) => ({
   token: null,
-  authenticated: false,
+  authenticated: !!Cookies.get('auth'),
   loading: false,
   error: null,
   login: async (values: TLoginFormValues) => {
     set({ loading: true, error: null });
     try {
       const result = await loginAction(values);
-
       if (result.success) {
         set({
           token: result.access_token,
@@ -31,7 +31,6 @@ export const useAuthStore = create<TAuthState>()((set) => ({
   logout: async () => {
     try {
       const result = await logoutAction();
-
       if (result.success) {
         set({ token: null, authenticated: false });
       }
@@ -39,6 +38,6 @@ export const useAuthStore = create<TAuthState>()((set) => ({
       console.error('Logout failed:', error);
     }
   },
-  setError: (error) => set({ error }),
-  setLoading: (loading) => set({ loading }),
+  setError: (error: string | null) => set({ error }),
+  setLoading: (loading: boolean) => set({ loading }),
 }));
