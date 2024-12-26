@@ -11,6 +11,17 @@ export type TRegisterFormValues = {
   confirmPassword: string;
 };
 
+export type TAuthState = {
+  token: string | null;
+  authenticated: boolean;
+  loading: boolean;
+  error: string | null;
+  handleLogin: (values: TLoginFormValues) => Promise<void>;
+  logout: () => void;
+  setError: (error: string | null) => void;
+  setLoading: (loading: boolean) => void;
+};
+
 export type TLoginResponse = {
   access_token?: string;
   message?: string;
