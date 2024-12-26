@@ -1,8 +1,10 @@
 'use client';
 
+import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
+import EHttpCodes from '@/enums/http-codes.enum';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,6 +24,14 @@ export default function LoginForm() {
   const handleSubmit = async (values: TLoginFormValues) => {
     try {
       console.log(values);
+      const response = await axios.post('/auth/login/api', values);
+
+      if (response.status < EHttpCodes.Ok) {
+        throw new Error('Login failed');
+      }
+
+      const { access_token } = response.data;
+      console.log('Login success:', access_token);
     } catch (error) {
       console.error('Login failed:', error);
     }
