@@ -13,5 +13,6 @@ export type TRegisterFormValues = {
 
 export type TLoginResponse = {
   access_token?: string;
-  error?: Error;
+  message?: string;
+  success?: boolean;
 };
