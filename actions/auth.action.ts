@@ -16,7 +16,7 @@ export async function loginAction(values: TLoginFormValues) {
       'access_token',
       response.data.access_token,
       {
-        httpOnly: false,
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 60 * 60 * 24 * 7 * 4 * 6,
@@ -53,4 +53,10 @@ export async function logoutAction() {
       message: error.response?.data?.message || 'Logout failed',
     };
   }
+}
+
+export async function isAuthenticated() {
+  const cookieStore = await cookies();
+
+  return cookieStore.has('auth');
 }
