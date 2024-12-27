@@ -1,11 +1,10 @@
 import { create } from 'zustand';
-import Cookies from 'js-cookie';
 import { TLoginFormValues, TAuthState } from '@/types/auth.type';
 import { loginAction, logoutAction } from '@/actions/auth.action';
 
 export const useAuthStore = create<TAuthState>()((set) => ({
   token: null,
-  authenticated: !!Cookies.get('auth'),
+  authenticated: false,
   loading: false,
   error: null,
   login: async (values: TLoginFormValues) => {

@@ -1,31 +1,34 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import { serialize } from 'cookie';
 import { TLoginFormValues } from '@/types/auth.type';
 import axiosInstance from '@/lib/axios.lib';
+import { validateCsrfToken } from '@/lib/csrf.lib';
+import { setCookie, deleteCookie, getCookie } from '@/lib/cookie.lib';
 
 export async function loginAction(values: TLoginFormValues) {
+  const csrfToken = values.csrfToken;
+  const csrfCookie = await getCookie('csrf_token');
+
+  if (!csrfCookie || !validateCsrfToken(csrfToken, csrfCookie)) {
+    return {
+      success: false,
+      message: 'Invalid CSRF token',
+    };
+  }
+
   try {
     const response = await axiosInstance.post(
       `${process.env.API_URL}/v1/auth/login`,
       values,
     );
 
-    const serializedCookie = serialize(
-      'access_token',
-      response.data.access_token,
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 7 * 4 * 6,
-        path: '/',
-      },
-    );
-
-    const cookieStore = await cookies();
-    cookieStore.set('auth', serializedCookie);
+    await setCookie('access_token', response.data.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7 * 4 * 6,
+      path: '/',
+    });
 
     return {
       success: true,
@@ -41,8 +44,7 @@ export async function loginAction(values: TLoginFormValues) {
 
 export async function logoutAction() {
   try {
-    const cookieStore = await cookies();
-    cookieStore.delete('auth');
+    await deleteCookie('auth');
 
     return {
       success: true,
@@ -56,7 +58,6 @@ export async function logoutAction() {
 }
 
 export async function isAuthenticated() {
-  const cookieStore = await cookies();
-
-  return cookieStore.has('auth');
+  const authCookie = await getCookie('auth');
+  return authCookie !== null;
 }

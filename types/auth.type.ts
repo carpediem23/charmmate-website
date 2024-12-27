@@ -3,6 +3,7 @@ import Error from 'next/error';
 export type TLoginFormValues = {
   email: string;
   password: string;
+  csrfToken: string;
 };
 
 export type TRegisterFormValues = {

@@ -1,27 +1,44 @@
 'use client';
 
+import { useLayoutEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
 import { useAuthStore } from '@/store/useAuthStore';
+import { fetchCsrfToken } from '@/actions/csrf.action';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
   password: Yup.string().min(8).required(),
+  csrfToken: Yup.string().required(),
 });
 
 const initialValues: TLoginFormValues = {
   email: '',
   password: '',
+  csrfToken: '',
 };
 
 export default function LoginForm() {
   const { login, loading, error } = useAuthStore();
-  const handleSubmit = async (values: TLoginFormValues) => login(values);
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useLayoutEffect(() => {
+    async function getCsrfToken() {
+      const data = await fetchCsrfToken();
+      setCsrfToken(data.csrfToken);
+    }
+    getCsrfToken();
+  }, []);
+
+  const handleSubmit = async (values: TLoginFormValues) => {
+    login(values);
+  };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ ...initialValues, csrfToken }}
+      enableReinitialize
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
@@ -36,7 +53,6 @@ export default function LoginForm() {
               <span className="block sm:inline">{error}</span>
             </div>
           )}
-
           <div>
             <label
               htmlFor="email"
@@ -76,7 +92,7 @@ export default function LoginForm() {
               className="mt-1 text-sm text-red-600"
             />
           </div>
-
+          <Field type="hidden" name="csrfToken" value={csrfToken} />
           <button
             type="submit"
             disabled={loading}
