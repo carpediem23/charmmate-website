@@ -2,17 +2,18 @@
 
 import { TLoginFormValues } from '@/types/auth.type';
 import axiosInstance from '@/lib/axios.lib';
-import { validateCsrfToken } from '@/lib/csrf.lib';
+import { validateCsrfToken, generateCsrfToken } from '@/lib/csrf.lib';
 import { setCookie, deleteCookie, getCookie } from '@/lib/cookie.lib';
+import { randomBytes } from 'crypto';
 
 export async function loginAction(values: TLoginFormValues) {
-  const csrfToken = values.csrfToken;
-  const csrfCookie = await getCookie('csrf_token');
+  let csrfToken = values.csrfToken;
+  let csrfSecret = await getCookie('csrf_secret');
 
-  if (!csrfCookie || !validateCsrfToken(csrfToken, csrfCookie)) {
+  if (!csrfSecret || !validateCsrfToken(csrfSecret, csrfToken)) {
     return {
       success: false,
-      message: 'Invalid CSRF token',
+      message: 'CSRF token expired, please try again',
     };
   }
 
@@ -35,6 +36,8 @@ export async function loginAction(values: TLoginFormValues) {
       access_token: response.data.access_token,
     };
   } catch (error: any) {
+    console.error('Login error:', error);
+
     return {
       success: false,
       message: error.response?.data?.message || 'An error occurred',
