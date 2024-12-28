@@ -16,7 +16,7 @@ export async function fetchCsrfToken() {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 15, // 3 seconds
+      maxAge: 60 * 60 * 24 * 7 * 4 * 2,
       path: '/',
     });
 
@@ -24,7 +24,7 @@ export async function fetchCsrfToken() {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 15, // 3 seconds
+      maxAge: 60 * 60 * 24 * 7 * 4 * 2,
       path: '/',
     });
   }

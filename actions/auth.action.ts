@@ -5,6 +5,7 @@ import axiosInstance from '@/lib/axios.lib';
 import { validateCsrfToken, generateCsrfToken } from '@/lib/csrf.lib';
 import { setCookie, deleteCookie, getCookie } from '@/lib/cookie.lib';
 import { randomBytes } from 'crypto';
+import { fetchCsrfToken } from '@/actions/csrf.action';
 
 export async function loginAction(values: TLoginFormValues) {
   let csrfToken = values.csrfToken;
@@ -14,6 +15,7 @@ export async function loginAction(values: TLoginFormValues) {
     return {
       success: false,
       message: 'CSRF token expired, please try again',
+      csrfExpired: true,
     };
   }
 
@@ -27,7 +29,7 @@ export async function loginAction(values: TLoginFormValues) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7 * 4 * 6,
+      maxAge: 60 * 60 * 24 * 7 * 4 * 2,
       path: '/',
     });
 
