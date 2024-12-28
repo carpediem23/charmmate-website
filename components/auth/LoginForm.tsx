@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
 import { useAuthStore } from '@/store/useAuthStore';
 import { fetchCsrfToken } from '@/actions/csrf.action';
+import { loginAction } from '@/actions/auth.action';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -20,7 +21,7 @@ const initialValues: TLoginFormValues = {
 };
 
 export default function LoginForm() {
-  const { login, loading, error } = useAuthStore();
+  const { login, loading, error, setError } = useAuthStore();
   const [csrfToken, setCsrfToken] = useState('');
 
   useLayoutEffect(() => {
@@ -32,7 +33,21 @@ export default function LoginForm() {
   }, []);
 
   const handleSubmit = async (values: TLoginFormValues) => {
-    login(values);
+    const result = await loginAction(values);
+    if (result.csrfExpired) {
+      const data = await fetchCsrfToken();
+      setCsrfToken(data.csrfToken);
+
+      values.csrfToken = data.csrfToken;
+
+      const retryResult = await loginAction(values);
+
+      if (!retryResult.success) {
+        setError(retryResult.message);
+      }
+    } else if (!result.success) {
+      setError(result.message);
+    }
   };
 
   return (

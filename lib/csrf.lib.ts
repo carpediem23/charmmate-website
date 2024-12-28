@@ -1,9 +1,11 @@
-import { randomBytes } from 'crypto';
+import csrf from 'csrf';
 
-export function generateCsrfToken() {
-  return randomBytes(32).toString('hex');
+const tokens = new csrf();
+
+export function generateCsrfToken(secret: string) {
+  return tokens.create(secret);
 }
 
-export function validateCsrfToken(requestToken: string, cookies: string) {
-  return requestToken === cookies;
+export function validateCsrfToken(secret: string, token: string) {
+  return tokens.verify(secret, token);
 }
