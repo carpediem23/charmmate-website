@@ -1,12 +1,12 @@
 'use client';
 
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { TLoginFormValues } from '@/types/auth.type';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/store/auth.store';
 import { fetchCsrfToken } from '@/actions/csrf.action';
-import { loginAction } from '@/actions/auth.action';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -21,8 +21,9 @@ const initialValues: TLoginFormValues = {
 };
 
 export default function LoginForm() {
-  const { login, loading, error, setError } = useAuthStore();
+  const { login, loading, error, authenticated } = useAuthStore();
   const [csrfToken, setCsrfToken] = useState('');
+  const router = useRouter();
 
   useLayoutEffect(() => {
     async function getCsrfToken() {
@@ -32,22 +33,12 @@ export default function LoginForm() {
     getCsrfToken();
   }, []);
 
+  useEffect(() => {
+    if (authenticated) router.replace('/');
+  }, [authenticated]);
+
   const handleSubmit = async (values: TLoginFormValues) => {
-    const result = await loginAction(values);
-    if (result.csrfExpired) {
-      const data = await fetchCsrfToken();
-      setCsrfToken(data.csrfToken);
-
-      values.csrfToken = data.csrfToken;
-
-      const retryResult = await loginAction(values);
-
-      if (!retryResult.success) {
-        setError(retryResult.message);
-      }
-    } else if (!result.success) {
-      setError(result.message);
-    }
+    await login(values);
   };
 
   return (

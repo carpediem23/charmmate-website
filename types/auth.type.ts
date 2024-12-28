@@ -21,6 +21,7 @@ export type TAuthState = {
   logout: () => void;
   setError: (error: string | null) => void;
   setLoading: (loading: boolean) => void;
+  setAuthenticated: (authenticated: boolean) => void;
 };
 
 export type TLoginResponse = {

@@ -2,12 +2,18 @@
 
 import { TLoginFormValues } from '@/types/auth.type';
 import axiosInstance from '@/lib/axios.lib';
-import { validateCsrfToken, generateCsrfToken } from '@/lib/csrf.lib';
+import { validateCsrfToken } from '@/lib/csrf.lib';
 import { setCookie, deleteCookie, getCookie } from '@/lib/cookie.lib';
-import { randomBytes } from 'crypto';
-import { fetchCsrfToken } from '@/actions/csrf.action';
+import { TServiceResponse } from '@/types/common.type';
+import EHttpCodes from '@/enums/common.enum';
 
-export async function loginAction(values: TLoginFormValues) {
+export async function loginAction(values: TLoginFormValues): Promise<
+  TServiceResponse &
+    Partial<{
+      csrfExpired?: boolean;
+      access_token?: string;
+    }>
+> {
   let csrfToken = values.csrfToken;
   let csrfSecret = await getCookie('csrf_secret');
 
@@ -16,6 +22,7 @@ export async function loginAction(values: TLoginFormValues) {
       success: false,
       message: 'CSRF token expired, please try again',
       csrfExpired: true,
+      status: EHttpCodes.BadRequest,
     };
   }
 
@@ -36,6 +43,7 @@ export async function loginAction(values: TLoginFormValues) {
     return {
       success: true,
       access_token: response.data.access_token,
+      status: EHttpCodes.Ok,
     };
   } catch (error: any) {
     console.error('Login error:', error);
@@ -43,26 +51,31 @@ export async function loginAction(values: TLoginFormValues) {
     return {
       success: false,
       message: error.response?.data?.message || 'An error occurred',
+      status: error.response?.status || EHttpCodes.InternalServerError,
     };
   }
 }
 
-export async function logoutAction() {
+export async function logoutAction(): Promise<TServiceResponse> {
   try {
     await deleteCookie('auth');
 
     return {
       success: true,
+      status: EHttpCodes.Ok,
+      message: 'Logout successful',
     };
   } catch (error: any) {
     return {
       success: false,
       message: error.response?.data?.message || 'Logout failed',
+      status: error.response?.status || EHttpCodes.InternalServerError,
     };
   }
 }
 
-export async function isAuthenticated() {
-  const authCookie = await getCookie('auth');
+export async function isAuthenticated(): Promise<boolean> {
+  const authCookie = await getCookie('access_token');
+
   return authCookie !== null;
 }
