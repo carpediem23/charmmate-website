@@ -49,7 +49,6 @@ export async function loginAction(values: TLoginFormValues): Promise<
     };
   } catch (error: any) {
     console.error('Login error:', error);
-    console.error('error endpoint', error.response?.config?.url);
     
     return {
       success: false,
