@@ -27,6 +27,8 @@ export async function loginAction(values: TLoginFormValues): Promise<
   }
 
   try {
+    console.log('login endpoint:', `${process.env.API_URL}/v1/auth/login`);
+    
     const response = await axiosInstance.post(
       `${process.env.API_URL}/v1/auth/login`,
       values,
