@@ -20,7 +20,9 @@ jobs:
     - name: Deploy to VPS
       env:
           BRANCH_NAME: ${{ github.ref_name }}
-          API_KEY: ${{ vars.API_KEY }}
+          API_KEY: ${{ vars.API_URL }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
           REPO_DIR: /opt/charmmate-website
       run: |
           echo "Connecting to VPS and starting deployment process..."
