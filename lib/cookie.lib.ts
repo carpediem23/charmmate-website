@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { cookies } from 'next/headers';
 
 export async function setCookie(name: string, value: string, options: any) {

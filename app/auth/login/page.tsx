@@ -22,7 +22,7 @@ export default async function LoginPage() {
         </h2>
         <LoginForm />
         <Link className="block mt-4" href="/auth/register">
-          You don't have any account?
+          You don&apos;t have any account?
         </Link>
       </div>
     </div>
