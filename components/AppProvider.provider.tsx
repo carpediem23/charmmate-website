@@ -6,19 +6,14 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { TAppProiderProps } from '@/types/components.type';
+import { TAppProiderProps, TAppContextProps } from '@/types/components.type';
 import { useAuthStore } from '@/store/auth.store';
 import { isAuthenticated } from '@/actions/auth.action';
 
-interface AppContextProps {
-  state: any;
-  setState: React.Dispatch<React.SetStateAction<any>>;
-}
-
-const AppContext = createContext<AppContextProps | undefined>(undefined);
+const AppContext = createContext<TAppContextProps | undefined>(undefined);
 
 export const AppProvider: React.FC<TAppProiderProps> = ({ children }) => {
-  const [state, setState] = useState<any>(null);
+  const [state, setState] = useState<unknown>(null);
   const { setAuthenticated } = useAuthStore();
 
   useLayoutEffect(() => {
@@ -36,7 +31,7 @@ export const AppProvider: React.FC<TAppProiderProps> = ({ children }) => {
   );
 };
 
-export const useAppContext = (): AppContextProps => {
+export const useAppContext = (): TAppContextProps => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error('useAppContext must be used within an AppProvider');
