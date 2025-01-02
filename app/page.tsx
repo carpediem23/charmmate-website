@@ -6,5 +6,7 @@ export const metadata = {
 };
 
 export default function HomePage() {
+  console.log(process.env.API_URL);
+  
   return <Home />;
 }
