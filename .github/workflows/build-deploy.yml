@@ -1,0 +1,55 @@
+name: Build and Deploy To VPS with Docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to VPS
+      env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          API_KEY: ${{ vars.API_KEY }}
+      run: |
+          echo "Connecting to VPS and starting deployment process..."
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+            echo "Checking for existing repository..."
+            if [ -d "$REPO_DIR" ]; then
+              echo "Removing existing repository at $REPO_DIR..."
+              rm -rf "$REPO_DIR"
+            fi
+
+            echo "Cloning branch $BRANCH_NAME into $REPO_DIR..."
+            git clone https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git -b $BRANCH_NAME "$REPO_DIR"
+
+            echo "Building Docker image on VPS..."
+            cd "$REPO_DIR"
+            docker build -t ${{ github.event.repository.name }}:latest .
+
+            echo "Stopping and removing existing Docker container..."
+            docker stop ${{ github.event.repository.name }} || true
+            docker rm ${{ github.event.repository.name }} || true
+
+            echo "Running new Docker container on VPS..."
+            docker run -d \
+              --name ${{ github.event.repository.name }} \
+              --restart always \
+              -p 3001:3000 \
+              --network charmmate-orchestration_charmmate \
+              -e API_KEY=${{ vars.API_KEY }} \
+              ${{ github.event.repository.name }}:latest
+              echo "Delete project files"
+              cd ..
+              rm "$REPO_DIR" -rf
+          EOF
