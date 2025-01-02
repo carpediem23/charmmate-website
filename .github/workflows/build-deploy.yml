@@ -20,7 +20,7 @@ jobs:
     - name: Deploy to VPS
       env:
           BRANCH_NAME: ${{ github.ref_name }}
-          API_KEY: ${{ vars.API_URL }}
+          API_URL: ${{ vars.API_URL }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           REPO_DIR: /opt/charmmate-website
@@ -50,7 +50,7 @@ jobs:
               --restart always \
               -p 3001:3000 \
               --network charmmate-orchestration_charmmate \
-              -e API_KEY=${{ vars.API_KEY }} \
+              -e API_URL=${{ vars.API_URL }} \
               ${{ github.event.repository.name }}:latest
               echo "Delete project files"
               cd ..
